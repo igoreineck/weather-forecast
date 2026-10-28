@@ -13,6 +13,8 @@ module OpenWeather
       end
     end
 
+    # @TODO: handle status codes accordingly to make the adapter resilient
+
     # Direct Geocoding. Search by City name, State code, Country code. ISO 3166.
     # http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
     # http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
@@ -30,7 +32,10 @@ module OpenWeather
       params += ",#{state_code}" if state_code
       params += ",#{country_code}" if country_code
 
-      response = @connection.get("#{GEOCODING_URL}?q=#{params}&appid=#{API_KEY}")
+      response = @connection.get(GEOCODING_URL, {
+        q: params,
+        appid: API_KEY
+      })
 
       # @TODO: improve errors for this.
       raise "API error: #{response.status}" unless response.success?
@@ -44,80 +49,33 @@ module OpenWeather
 
     #
     # current: https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
-    def retrieve_current_weather_by(latitute, longitude)
-      response = @connection.get("#{CURRENT_WEATHER_URL}?lat=#{latitute}&lon=#{longitude}&units=metric&appid=#{API_KEY}")
+    def retrieve_current_weather_by(lat, lon)
+      response = @connection.get(CURRENT_WEATHER_URL, {
+        lat: lat,
+        lon: lon,
+        units: "metric",
+        appid: API_KEY
+      })
+
       JSON.parse(response.body)
     rescue StandardError, RuntimeError => e
       # raise "API error: #{response.status}" unless response.success?
       puts "API error: #{e}"
     end
-
-    # Response example:
-    # "main": {
-    #     "temp": 298.48,
-    #     "feels_like": 298.74,
-    #     "temp_min": 297.56,
-    #     "temp_max": 300.05,
-    #     "pressure": 1015,
-    #     "humidity": 64,
-    #     "sea_level": 1015,
-    #     "grnd_level": 933
-    #   },
-    # "dt" -> time of data calculation (daytime)
-    # "timezone" ...
 
     # forecast: api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
     def retrieve_forecast_for_five_days_by(lat, lon)
-      response = @connection.get("#{FORECAST_WEATHER_URL}?lat=#{lat}&lon=#{lon}&units=metric&appid=#{API_KEY}")
+      response = @connection.get(FORECAST_WEATHER_URL, {
+        lat:,
+        lon:,
+        units: "metric",
+        appid: API_KEY
+      })
+
       JSON.parse(response.body)
     rescue StandardError, RuntimeError => e
       # raise "API error: #{response.status}" unless response.success?
       puts "API error: #{e}"
     end
-
-    # Response example:
-    # {
-    #   "dt": 1661871600,
-    #   "main": {
-    #     "temp": 296.76,
-    #     "feels_like": 296.98,
-    #     "temp_min": 296.76,
-    #     "temp_max": 297.87,
-    #     "pressure": 1015,
-    #     "sea_level": 1015,
-    #     "grnd_level": 933,
-    #     "humidity": 69,
-    #     "temp_kf": -1.11
-    #   },
-    #   "weather": [
-    #     {
-    #       "id": 500,
-    #       "main": "Rain",
-    #       "description": "light rain",
-    #       "icon": "10d"
-    #     }
-    #   ],
-    #   "dt_txt": "2022-08-30 15:00:00"
-    # }
   end
 end
-
-# adapter = OpenWeather::Client.new
-# information = adapter.search_by_city("Joinville", "SC", "BR")[0]
-# lt = information["lat"]
-# lg = information["lon"]
-
-# current = adapter.retrieve_current_weather_by(lt, lg)
-# weather = current["weather"]
-# main = current["main"]
-# daytime = current["dt"]
-#
-# Chunks of 3 hour each
-# Increment by 9 to reach the next day
-# forecast = adapter.retrieve_forecast_for_five_days_by(lt, lg)
-# list = forecast["list"]
-# second_day = list[8]
-# second_day["dt"]
-# second_day["main"]
-# second_day["weather"]
-# second_day["dt_txt"]
