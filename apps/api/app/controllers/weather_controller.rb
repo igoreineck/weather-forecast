@@ -2,14 +2,11 @@ class WeatherController < ActionController::API
   # @TODO: change these params to be dynamic
   # @TODO: add serializers to produce a better output for the frontend
 
-  def coordenates
-    result = open_weather_service.search_by_city(
-      params[:city],
-      params[:state_code],
-      params[:country_code]
-    )[0]
+  def address
+    result = open_street_map_service.search_by(address: params[:address])
 
     render status: :ok, json: result
+    # @TODO: now, I should consider using the lat, lng from here
   end
 
   def current
@@ -36,7 +33,11 @@ class WeatherController < ActionController::API
     @open_weather_service ||= OpenWeather::Client.new
   end
 
+  def open_street_map_service
+    @open_street_map_service ||= OpenStreetMap::Client.new
+  end
+
   def permitted_params
-    params.permit(:city, :state_code, :country_code, :lat, :lon)
+    params.permit(:address, :lat, :lon)
   end
 end
