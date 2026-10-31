@@ -198,7 +198,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.4-x86_64-linux-musl)
       racc (~> 1.4)
-    opencage-geocoder (3.4.0)
     ostruct (0.6.3)
     parallel (2.3.0)
     parser (3.3.13.0)
@@ -367,7 +366,6 @@ DEPENDENCIES
   faraday
   image_processing (~> 1.2)
   kamal
-  opencage-geocoder
   puma (>= 5.0)
   rails (~> 8.1.4)
   rubocop-rails-omakase

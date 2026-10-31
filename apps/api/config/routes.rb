@@ -5,7 +5,15 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  post "api/address", to: "weather#address"
-  post "api/current", to: "weather#current"
-  post "api/forecast", to: "weather#forecast"
+  # @TODO: I may have to change from POST to GET requests, to respect RESTful patterns.
+  # Analyze later.
+
+  # get "api/location/search?address="
+  #
+  # get "api/weather/current?zip_code=&lat=&lng="
+  # get "api/weather/forecast?zip_code=&lat=&lng="
+  #
+  get "api/location/search", to: "location#search"
+  get "api/weather/current", to: "weather#current"
+  get "api/weather/forecast", to: "weather#forecast"
 end
