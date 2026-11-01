@@ -21,15 +21,9 @@ module OpenStreetMap
         format: "json"
       })
 
-      JSON.parse(response.body)
+      JSON.parse(response.body, symbolize_names: true)
     rescue StandardError, RuntimeError => error
       puts "API error: #{error}"
     end
   end
 end
-
-# -> address
-# -> display_name
-# -> lat
-# -> lon
-# -> think about zip code and postcode later

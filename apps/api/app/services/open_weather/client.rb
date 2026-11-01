@@ -12,8 +12,6 @@ module OpenWeather
     end
 
     # @TODO: handle status codes accordingly to make the adapter resilient
-    # @TODO: improve method names to be better readable
-
     def retrieve_current_weather_by(lat:, lng:)
       response = @connection.get(CURRENT_WEATHER_URL, {
         lat:,
@@ -22,13 +20,11 @@ module OpenWeather
         appid: API_KEY
       })
 
-      JSON.parse(response.body)
+      JSON.parse(response.body, symbolize_names: true)
     rescue StandardError, RuntimeError => e
-      # raise "API error: #{response.status}" unless response.success?
       puts "API error: #{e}"
     end
 
-    # forecast: api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}
     def retrieve_forecast_for_five_days_by(lat:, lng:)
       response = @connection.get(FORECAST_WEATHER_URL, {
         lat:,
@@ -37,9 +33,8 @@ module OpenWeather
         appid: API_KEY
       })
 
-      JSON.parse(response.body)
+      JSON.parse(response.body, symbolize_names: true)
     rescue StandardError, RuntimeError => e
-      # raise "API error: #{response.status}" unless response.success?
       puts "API error: #{e}"
     end
   end
