@@ -3,18 +3,34 @@ import type { DailyForecastType, WeatherType } from "@/api/get-weather";
 interface WeatherProps {
   current: WeatherType;
   forecast: DailyForecastType;
+  isLoading: boolean;
 }
 
-// @TODO: fix this issue. The date is not formatting anymore.
-function formatDate(dateTime) {
-  const date = new Date(dateTime);
-  return date.toLocaleString("en-US", { timeZone: "UTC" });
+const optionsForCurrentDate = {
+  weekday: "long",
+  day: "numeric",
+  month: "short",
+  hour: "numeric",
+  minute: "numeric",
+  hour12: false,
+  timeZone: "UTC",
+};
+
+const optionsForDailyForecastDate = {
+  weekday: "short",
+  timeZone: "UTC",
+};
+
+function formatDate(date: string, options: {}) {
+  return new Date(date).toLocaleString("en-US", options);
 }
 
 function Current({ current }) {
   return (
     <div className="rounded-2xl bg-linear-to-br from-sky-500 to-indigo-600 p-6 text-white shadow-md">
-      <p className="text-sm opacity-80">{formatDate(current.time)}</p>
+      <p className="text-sm opacity-80">
+        {formatDate(current.time, optionsForCurrentDate)} - Temperature (°C)
+      </p>
       <div className="mt-2 flex items-center justify-between">
         <span className="text-6xl font-light">{Math.round(current.temp)}°</span>
       </div>
@@ -25,11 +41,11 @@ function Current({ current }) {
   );
 }
 
-function DailyForecast({ key, entry }) {
+function DailyForecast({ time, entry }) {
   return (
     <div className="flex items-center gap-4 border-b border-slate-100 py-3 last:border-0">
       <span className="w-24 text-sm font-medium capitalize text-slate-700">
-        {key}
+        {formatDate(time, optionsForDailyForecastDate)}
       </span>
       <span className="w-8 text-right text-sm text-slate-700">
         {`L:${Math.round(entry.temp_min)}°`}
@@ -42,19 +58,25 @@ function DailyForecast({ key, entry }) {
   );
 }
 
-export function Weather({ current, forecast }: WeatherProps) {
+export function Weather({ current, forecast, isLoading }: WeatherProps) {
   if (!current) return;
   if (!forecast) return;
+
+  if (isLoading) {
+    return <div className="space-y-4">Loading...</div>;
+  }
+
+  const fiveDayForecast = Object.keys(forecast).slice(1);
 
   return (
     <div className="space-y-4">
       <Current current={current} />
       <div className="rounded-2xl border border-slate-200 bg-white px-4 shadow-sm">
-        <p className="px-4 pt-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-600 border-b-0">
+        <div className="pt-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-600 border-b-0">
           Next days
-        </p>
-        {Object.keys(forecast).map((key) => (
-          <DailyForecast key={key} entry={forecast[key]} />
+        </div>
+        {fiveDayForecast.map((key) => (
+          <DailyForecast time={key} entry={forecast[key]} />
         ))}
       </div>
     </div>

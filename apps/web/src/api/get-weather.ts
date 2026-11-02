@@ -3,7 +3,7 @@ import { api } from "@/lib/axios";
 export interface GetWeatherBody {
   lat: number;
   lon: number;
-  postcode: number;
+  postcode: string | null;
 }
 
 export interface WeatherType {
