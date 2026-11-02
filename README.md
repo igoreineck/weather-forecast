@@ -17,3 +17,5 @@ The app is divided in two layers:
 ## Overview
 
 ![Homepage](media/homepage.jpeg)
+
+https://github.com/user-attachments/assets/168455de-aecb-4dee-856d-affa13b776eb
