@@ -8,13 +8,9 @@ export interface Location {
   display_name: string;
   lat: number;
   lon: number;
-  cached: boolean | null;
-  address: {
-    state: string;
-    country: string;
-    country_code: string;
-    postcode: string | null;
-  };
+  state: string;
+  country: string;
+  postcode: string | null;
 }
 
 export interface SearchLocationResponse {
@@ -28,5 +24,6 @@ export async function searchLocation({ address }: SearchLocationBody) {
       params: { address },
     },
   );
-  return response.data;
+
+  return response;
 }
