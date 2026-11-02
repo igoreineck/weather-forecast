@@ -9,7 +9,8 @@ class WeatherPresenter
     {
       time: Time.at(@params[:dt] + @params[:timezone]).utc,
       temp:,
-      weather_condition:
+      weather_condition:,
+      weather_icon_url:
     }
   end
 
@@ -19,5 +20,11 @@ class WeatherPresenter
 
   def weather_condition
     @params[:weather][0][:main]
+  end
+
+  def weather_icon_url
+    icon_id = @params[:weather][0][:icon]
+
+    "https://openweathermap.org/img/wn/#{icon_id}@2x.png"
   end
 end

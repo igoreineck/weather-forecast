@@ -3,16 +3,22 @@ class WeatherController < ActionController::API
 
   def show
     result = WeatherService
-      .new(lat: params[:lat], lon: params[:lon])
-      .retrieve
+      .new(lat: params[:lat], lon: params[:lon], postcode: params[:postcode])
+      .retrieve(refresh:)
 
     render status: :ok, json: result
   end
 
   private
 
+  def refresh
+    return false unless params[:refresh]
+
+    ActiveModel::Type::Boolean.new.cast(params[:refresh])
+  end
+
   # @TODO: review permitted params
   def permitted_params
-    params.permit(:zip_code, :lat, :lon)
+    params.permit(:postcode, :lat, :lon, :refresh)
   end
 end
