@@ -15,7 +15,12 @@ export function LocationList({ locations, handleLocationClick, isLoading }) {
               {locations.length === 1 ? "address" : "addresses"}
             </p>
             {locations.map((location) => (
-              <Location location={location} onClick={handleLocationClick} />
+              <Location
+                location={location}
+                onClick={() =>
+                  handleLocationClick({ location, refresh: false })
+                }
+              />
             ))}
           </ul>
         </div>

@@ -4,6 +4,7 @@ export interface GetWeatherBody {
   lat: number;
   lon: number;
   postcode: string | null;
+  refresh: boolean;
 }
 
 export interface WeatherType {
@@ -24,11 +25,18 @@ export interface DailyForecastType {
 export interface GetWeatherResponse {
   current: WeatherType;
   forecast: DailyForecastType;
+  cached: boolean;
+  fetched_at: string;
 }
 
-export async function getWeather({ lat, lon, postcode }: GetWeatherBody) {
+export async function getWeather({
+  lat,
+  lon,
+  postcode,
+  refresh,
+}: GetWeatherBody) {
   const response = await api.get<GetWeatherResponse>("/api/weather", {
-    params: { lat, lon, postcode },
+    params: { lat, lon, postcode, refresh },
   });
 
   return response;

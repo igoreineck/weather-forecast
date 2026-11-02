@@ -1,8 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-// interface SearchFormProps {}
-
 export function SearchForm({ register, errors, handleSubmit, onSubmit }) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 mb-4">
@@ -17,7 +15,7 @@ export function SearchForm({ register, errors, handleSubmit, onSubmit }) {
       </div>
       <Button
         type="submit"
-        className="rounded-xl bg-slate-900 px-5 font-medium text-white hover:bg-slate-800"
+        className="rounded-xl bg-slate-900 px-5 font-medium text-white hover:bg-slate-800 cursor-pointer"
       >
         Search
       </Button>

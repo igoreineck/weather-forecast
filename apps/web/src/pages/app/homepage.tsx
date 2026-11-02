@@ -15,6 +15,7 @@ type SearchLocationForm = z.infer<typeof searchLocationForm>;
 
 export function Homepage() {
   const [locations, setLocations] = useState<Location[] | []>([]);
+  const [location, setLocation] = useState();
   const [loadingLocations, setLoadingLocations] = useState(false);
   const [weather, setWeather] = useState({});
   const [loadingWeather, setLoadingWeather] = useState(false);
@@ -41,7 +42,8 @@ export function Homepage() {
     }
   }
 
-  async function handleLocationClick(location: Location) {
+  async function handleLocationClick({ location, refresh }) {
+    setLocation(location);
     setValue("address", location.display_name);
     setLoadingWeather(true);
 
@@ -50,6 +52,7 @@ export function Homepage() {
         lat: location.lat,
         lon: location.lon,
         postcode: location.postcode,
+        refresh,
       });
 
       if (result.status === 200) {
@@ -64,21 +67,32 @@ export function Homepage() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
-      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2">
-        <div>
-          <SearchForm
-            register={register}
-            errors={errors}
-            handleSubmit={handleSubmit}
-            onSubmit={onSubmit}
-          />
-          <LocationList
-            locations={locations}
-            handleLocationClick={handleLocationClick}
-            isLoading={loadingLocations}
+      <div className="mx-auto max-w-5xl">
+        <h2 className="text-4xl text-center font-medium mb-20">
+          Weather Forecast
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          <div>
+            <SearchForm
+              register={register}
+              errors={errors}
+              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
+            />
+            <LocationList
+              locations={locations}
+              handleLocationClick={handleLocationClick}
+              isLoading={loadingLocations}
+            />
+          </div>
+          <Weather
+            isLoading={loadingWeather}
+            weather={weather}
+            refreshCallback={() =>
+              handleLocationClick({ location, refresh: true })
+            }
           />
         </div>
-        <Weather isLoading={loadingWeather} weather={weather} />
       </div>
     </div>
   );
