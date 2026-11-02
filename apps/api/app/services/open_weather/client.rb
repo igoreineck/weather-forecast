@@ -12,10 +12,12 @@ module OpenWeather
     end
 
     # @TODO: handle status codes accordingly to make the adapter resilient
-    def retrieve_current_weather_by(lat:, lng:)
+    def retrieve_current_weather_by(lat:, lon:)
+      return if lat.nil? || lon.nil?
+
       response = @connection.get(CURRENT_WEATHER_URL, {
         lat:,
-        lon: lng,
+        lon:,
         units: "metric",
         appid: API_KEY
       })
@@ -25,10 +27,12 @@ module OpenWeather
       puts "API error: #{e}"
     end
 
-    def retrieve_forecast_for_five_days_by(lat:, lng:)
+    def retrieve_forecast_for_five_days_by(lat:, lon:)
+      return if lat.nil? || lon.nil?
+
       response = @connection.get(FORECAST_WEATHER_URL, {
         lat:,
-        lon: lng,
+        lon:,
         units: "metric",
         appid: API_KEY
       })
