@@ -78,7 +78,7 @@ export function Homepage() {
             isLoading={loadingLocations}
           />
         </div>
-        <Weather isLoading={loadingWeather} {...weather} />
+        <Weather isLoading={loadingWeather} weather={weather} />
       </div>
     </div>
   );

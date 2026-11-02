@@ -10,6 +10,7 @@ export interface WeatherType {
   time: string;
   temp: number;
   weather_condition: string;
+  weather_icon_url: string;
 }
 
 export interface DailyForecastType {
