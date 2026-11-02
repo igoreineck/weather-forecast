@@ -16,12 +16,8 @@ class ForecastPresenter
 
     grouped.transform_values do |items|
       time_series = items.map do |i|
-        # {
-        #   time: convert_time_with_time_zone(i[:dt]),
-        #   temp: i.dig(:main, :temp),
-        #   weather_condition: i[:weather][0][:main]
-        # }
         i[:timezone] = @params.dig(:city, :timezone)
+
         WeatherPresenter.new(params: i).to_h
       end
 
