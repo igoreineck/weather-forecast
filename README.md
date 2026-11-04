@@ -52,4 +52,6 @@ https://github.com/user-attachments/assets/168455de-aecb-4dee-856d-affa13b776eb
 - The weather condition for each time window, not necessarily only grouped by day. The backend already sends this information,
   it's just a matter of adding another component to render it.
 - Add store management for data flow to reduce prop drilling.
-- Add FE tests at least for common scenarios
+- Add FE tests at least for common scenarios.
+- Add FE better error handling, especially for errors coming from the API.
+- Increase FE type checks.
