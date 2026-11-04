@@ -2,6 +2,18 @@
 
 ## How to execute
 
+### Check Ruby version
+
+Make sure you have Ruby 4.0.7 installed:
+
+```bash
+ruby -v
+
+# Must be greather than 4.0.7
+```
+
+The version can be checked at `.ruby-version`.
+
 ### Install all dependencies
 
 First run the bundler to install all dependencies:
@@ -47,7 +59,7 @@ apps/api/bin/dev
 There are two main endpoints available. The 1st is:
 
 ```txt
-GET http://localhost:3000/api/location/search
+GET http://localhost:3000/api/location
 ```
 
 An `address` must be provided in order to retrieve any information:
@@ -55,7 +67,7 @@ An `address` must be provided in order to retrieve any information:
 ```txt
 For example
 
--> GET http://localhost:3000/api/location/search?address=Berlin
+-> GET http://localhost:3000/api/location?address=Berlin
 ```
 
 The output follows this structure as an example:
@@ -152,3 +164,43 @@ The output follows this structure as an example:
 ```
 
 It shows a forecast for 5 days and 3 hour step grouped by date. Including the high and low temperatures for each following day.
+
+## Test execution
+
+To run all test cases at once use:
+
+```bash
+bundle exec rspec
+
+# Expected output
+# ..............................
+#
+# Finished in 0.05993 seconds (files took 0.57553 seconds to load)
+# 30 examples, 0 failures
+```
+
+To run all tests from one specific file, choose a file then:
+
+```bash
+bundle exec rspec "<file_name>"
+
+# Example
+bundle exec rspec spec/requests/weather_controller_spec.rb
+```
+
+If you want to target one specific test case from the file chosen, then:
+
+```bash
+# Example
+bundle exec rspec spec/requests/weather_controller_spec.rb:40
+```
+
+## External libraries
+
+- [faraday](https://github.com/lostisland/faraday): used for HTTP requests
+- [rack-cors](https://github.com/cyu/rack-cors): to enable CORS and permit requests from the frontend and other sources
+- [ruby-lsp-rspec](https://github.com/st0012/ruby-lsp-rspec): Ruby LSP for RSpec
+- [guard-rspec](https://github.com/guard/guard-rspec): it enables faster test development by executing the whole test suite on every file change
+- [webmock](https://github.com/bblimke/webmock): used to mock HTTP requests
+- [rspec-rails](https://rspec.info/features/6-0/rspec-rails/): RSpec configuration for Ruby on Rails
+- [dotenv-rails](https://rubygems.org/gems/dotenv-rails/versions/2.1.1): to read env variables

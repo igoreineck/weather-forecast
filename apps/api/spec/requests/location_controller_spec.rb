@@ -1,8 +1,7 @@
 require "rails_helper"
 
 RSpec.describe LocationController, type: :request do
-  # @TODO: change to /api/location? ...
-  describe "GET /api/location/search" do
+  describe "GET /api/location" do
     context "when an address is given" do
       let(:payload) do
         { address: "Berlin" }
@@ -36,7 +35,7 @@ RSpec.describe LocationController, type: :request do
             content: expected_body
           })
 
-        get "/api/location/search", params: payload
+        get "/api/location", params: payload
       end
 
       it "returns a status code 200" do
@@ -89,7 +88,7 @@ RSpec.describe LocationController, type: :request do
             content: expected_body
           })
 
-        get "/api/location/search", params: payload
+        get "/api/location", params: payload
       end
 
       it "returns a status code 200" do
@@ -119,7 +118,7 @@ RSpec.describe LocationController, type: :request do
             content: []
           })
 
-        get "/api/location/search", params: payload
+        get "/api/location", params: payload
       end
 
       it "returns a status code 200" do
@@ -148,7 +147,7 @@ RSpec.describe LocationController, type: :request do
             error_message: "Some unexpected error happened"
           })
 
-        get "/api/location/search", params: {}
+        get "/api/location", params: {}
       end
 
       it "returns a status code 404" do

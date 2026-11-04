@@ -1,5 +1,5 @@
 class WeatherController < ActionController::API
-  def show
+  def index
     result = WeatherService
       .new(
         lat: params[:lat],

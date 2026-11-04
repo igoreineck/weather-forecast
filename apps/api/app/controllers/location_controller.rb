@@ -1,5 +1,5 @@
 class LocationController < ActionController::API
-  def search
+  def index
     result = LocationService
       .new(address: params[:address])
       .retrieve
