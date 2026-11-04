@@ -40,11 +40,6 @@ https://github.com/user-attachments/assets/168455de-aecb-4dee-856d-affa13b776eb
 - The cache mechanism uses `memory_store` in development, so it is lost after restarting the server and it is not shared between processes.
 - Addressees returned from Open Stree Maps without a postcode are not cached.
 
-### What's missing
-
-- Tests are missing in general from both frontend and backend.
-- Error treatment for API requests coming from the third-party services.
-
 ### Future improvements
 
 - Use Redis or Solid Cache to have a persistent cache.
@@ -57,3 +52,4 @@ https://github.com/user-attachments/assets/168455de-aecb-4dee-856d-affa13b776eb
 - The weather condition for each time window, not necessarily only grouped by day. The backend already sends this information,
   it's just a matter of adding another component to render it.
 - Add store management for data flow to reduce prop drilling.
+- Add FE tests at least for common scenarios
