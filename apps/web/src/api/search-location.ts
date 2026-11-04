@@ -13,17 +13,12 @@ export interface Location {
   postcode: string | null;
 }
 
-export interface SearchLocationResponse {
-  locations: Location[];
-}
+export type SearchLocationResponse = Location[];
 
 export async function searchLocation({ address }: SearchLocationBody) {
-  const response = await api.get<SearchLocationResponse>(
-    "/api/location/search",
-    {
-      params: { address },
-    },
-  );
+  const response = await api.get<SearchLocationResponse>("/api/location", {
+    params: { address },
+  });
 
   return response;
 }

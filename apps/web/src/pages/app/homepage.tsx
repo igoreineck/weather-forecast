@@ -33,7 +33,7 @@ export function Homepage() {
       const response = await searchLocation({ address: address.trim() });
 
       if (response.status === 200) {
-        setLocations(response.data.locations);
+        setLocations(response.data);
       }
     } catch (err) {
       console.log(err);
