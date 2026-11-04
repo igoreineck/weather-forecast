@@ -25,7 +25,7 @@ module OpenStreetMap
         content: JSON.parse(response.body, symbolize_names: true)
       )
     rescue StandardError, RuntimeError => e
-      Rails.logger.error(self.class.name, { message: e.message })
+      Rails.logger.error("#{self.class.name}: #{e.message}")
       Result.new(status: :error, error_message: e.message)
     end
   end

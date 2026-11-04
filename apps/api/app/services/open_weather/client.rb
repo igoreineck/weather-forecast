@@ -14,7 +14,7 @@ module OpenWeather
     end
 
     def retrieve_current_weather_by(lat:, lon:)
-      return Result.new(status: :success, content: []) if lat.nil? || lon.nil?
+      return Result.new(status: :success, content: {}) if lat.nil? || lon.nil?
 
       response = @connection.get(CURRENT_WEATHER_URL, {
         lat:,
@@ -28,12 +28,12 @@ module OpenWeather
         content: JSON.parse(response.body, symbolize_names: true)
       )
     rescue StandardError, RuntimeError => e
-      Rails.logger.error(self.class.name, { message: e.message })
+      Rails.logger.error("#{self.class.name}: #{e.message}")
       Result.new(status: :error, error_message: e.message)
     end
 
     def retrieve_forecast_for_five_days_by(lat:, lon:)
-      return Result.new(status: :success, content: []) if lat.nil? || lon.nil?
+      return Result.new(status: :success, content: {}) if lat.nil? || lon.nil?
 
       response = @connection.get(FORECAST_WEATHER_URL, {
         lat:,
@@ -47,7 +47,7 @@ module OpenWeather
         content: JSON.parse(response.body, symbolize_names: true)
       )
     rescue StandardError, RuntimeError => e
-      Rails.logger.error(self.class.name, { message: e.message })
+      Rails.logger.error("#{self.class.name}: #{e.message}")
       Result.new(status: :error, error_message: e.message)
     end
   end

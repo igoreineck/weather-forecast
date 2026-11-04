@@ -1,13 +1,14 @@
 class WeatherService
   CACHE_TTL = 30.minutes
 
-  def initialize(lat:, lon:, postcode:)
+  def initialize(lat:, lon:, postcode: nil)
     @lat = lat
     @lon = lon
     @postcode = postcode
   end
 
   def retrieve(refresh: false)
+    # @TODO: move this variable to inside the cache.
     cached = !refresh && Rails.cache.exist?(cache_key)
 
     current_weather = open_weather_service.retrieve_current_weather_by(

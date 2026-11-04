@@ -3,27 +3,8 @@
 require "rails_helper"
 
 RSpec.describe LocationPresenter do
-  let(:location) do
-    {
-      place_id: 145306205,
-      licence: "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
-      osm_type: "relation",
-      osm_id: 62422,
-      lat: "52.5173885",
-      lon: "13.3951309",
-      class: "boundary",
-      type: "administrative",
-      place_rank: 8,
-      importance: 0.8522196536088086,
-      addresstype: "city",
-      name: "Berlin",
-      display_name: "Berlin, Deutschland",
-      address: {
-        city: "Berlin", "ISO3166-2-lvl4": "DE-BE", country: "Deutschland", country_code: "de"
-      },
-      boundingbox: [ "52.3382448", "52.6755087", "13.0883450", "13.7611609" ]
-    }
-  end
+  let(:fixture) { file_fixture("presenters/location.json").read }
+  let(:location) { JSON.parse(fixture, symbolize_names: true) }
 
   describe "instance" do
     context "when the params object is given correctly" do
