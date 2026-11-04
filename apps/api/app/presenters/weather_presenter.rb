@@ -1,17 +1,23 @@
 class WeatherPresenter
+  class AttributesMissing < StandardError; end
+
   def initialize(params: {})
-    raise StandardError if params.empty? # @TODO: improve this message
+    raise AttributesMissing if params.empty?
 
     @params = params
   end
 
   def to_h
     {
-      time: Time.at(@params[:dt] + @params[:timezone]).utc,
+      time:,
       temp:,
       weather_condition:,
       weather_icon_url:
     }
+  end
+
+  def time
+     Time.at(@params[:dt] + @params[:timezone]).utc
   end
 
   def temp

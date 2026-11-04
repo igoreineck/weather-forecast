@@ -1,6 +1,8 @@
 class LocationPresenter
+  class AttributesMissing < StandardError; end
+
   def initialize(params: {})
-    raise StandardError if params.empty?
+    raise AttributesMissing if params.empty?
 
     @params = params
   end
