@@ -26,6 +26,7 @@ https://github.com/user-attachments/assets/168455de-aecb-4dee-856d-affa13b776eb
 
 - **Caching by postcode with 30 minute TTL:** the forecasting from OpenWeather is updated on every 3 hours. A cache in this
   time window follow the requirements and keeps a good balance between fresh data and a lower number of requests.
+- **Caching by latitude and longitude with 30 minute TTL:** OpenWeather does not return a valid postcode for some cases. For these cases, where a postcode does not exist, latitude and longitude are used to cache information.
 - **Grouping by day in the backend:** the frontend receives data already processed (min/max per day),
   keeping the logic centralized in one place.
 
@@ -38,7 +39,6 @@ https://github.com/user-attachments/assets/168455de-aecb-4dee-856d-affa13b776eb
 ### Known limitations
 
 - The cache mechanism uses `memory_store` in development, so it is lost after restarting the server and it is not shared between processes.
-- Addressees returned from Open Stree Maps without a postcode are not cached.
 
 ### Future improvements
 
