@@ -2,8 +2,7 @@ module OpenStreetMap
   class Client
     API_URL = "https://nominatim.openstreetmap.org/search"
 
-    # @TODO: if possible, think about API throttling.
-    # To avoid more than 1 request per second
+    Result = Struct.new(:status, :content, :error_message)
 
     def initialize
       @connection = Faraday.new do |instance|
@@ -13,7 +12,7 @@ module OpenStreetMap
     end
 
     def search_by(address:)
-      return if address.blank?
+      return Result.new(status: :success, content: []) if address.blank?
 
       response = @connection.get(API_URL, {
         q: address,
@@ -21,9 +20,13 @@ module OpenStreetMap
         format: "json"
       })
 
-      JSON.parse(response.body, symbolize_names: true)
-    rescue StandardError, RuntimeError => error
-      puts "API error: #{error}"
+      Result.new(
+        status: :success,
+        content: JSON.parse(response.body, symbolize_names: true)
+      )
+    rescue StandardError, RuntimeError => e
+      Rails.logger.error(self.class.name, { message: e.message })
+      Result.new(status: :error, error_message: e.message)
     end
   end
 end

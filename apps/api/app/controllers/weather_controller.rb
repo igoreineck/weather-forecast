@@ -1,12 +1,19 @@
 class WeatherController < ActionController::API
-  # @TODO: verify if extra params are being properly blocked
-
   def show
     result = WeatherService
-      .new(lat: params[:lat], lon: params[:lon], postcode: params[:postcode])
+      .new(
+        lat: params[:lat],
+        lon: params[:lon],
+        postcode: params[:postcode]
+      )
       .retrieve(refresh:)
 
-    render status: :ok, json: result
+    if result[:status] == :success
+      render status: :ok, json: result[:content]
+    else
+      render status: :not_found,
+        json: { error: result[:error_message] }
+    end
   end
 
   private
@@ -17,7 +24,6 @@ class WeatherController < ActionController::API
     ActiveModel::Type::Boolean.new.cast(params[:refresh])
   end
 
-  # @TODO: review permitted params
   def permitted_params
     params.permit(:postcode, :lat, :lon, :refresh)
   end

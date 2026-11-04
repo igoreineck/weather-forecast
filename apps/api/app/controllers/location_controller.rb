@@ -4,7 +4,12 @@ class LocationController < ActionController::API
       .new(address: params[:address])
       .retrieve
 
-    render status: :ok, json: result
+    if result[:status] == :success
+      render status: :ok, json: result[:content]
+    else
+      render status: :not_found,
+        json: { error: result[:error_message] }
+    end
   end
 
   private

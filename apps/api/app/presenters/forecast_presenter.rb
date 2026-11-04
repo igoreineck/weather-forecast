@@ -1,12 +1,18 @@
 class ForecastPresenter
+  class AttributesMissing < StandardError; end
+
   def initialize(params: {})
-    raise StandardError if params.empty?
+    raise AttributesMissing if params.empty?
 
     @params = params
   end
 
   def to_h
     grouped_by_date
+  end
+
+  def list
+    @params[:list]
   end
 
   def grouped_by_date

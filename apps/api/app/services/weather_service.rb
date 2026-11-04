@@ -10,38 +10,47 @@ class WeatherService
   def retrieve(refresh: false)
     cached = !refresh && Rails.cache.exist?(cache_key)
 
-    data = Rails.cache.fetch(cache_key, expires_in: CACHE_TTL, force: refresh) do
-      { current:, forecast:, fetched_at: Time.current.iso8601 }
+    current_weather = open_weather_service.retrieve_current_weather_by(
+      lat: @lat, lon: @lon
+    )
+    if current_weather.status == :error
+      return {
+        status: current_weather.status,
+        content: {},
+        error_message: current_weather.error_message
+      }
     end
 
-    {
-      current: data[:current],
-      forecast: data[:forecast],
-      cached:,
-      fetched_at: data[:fetched_at]
-    }
+    forecast_weather = open_weather_service.retrieve_forecast_for_five_days_by(
+      lat: @lat, lon: @lon
+    )
+    if forecast_weather.status == :error
+      return {
+        status: forecast_weather.status,
+        content: {},
+        error_message: forecast_weather.error_message
+      }
+    end
+
+    data = Rails.cache.fetch(cache_key, expires_in: CACHE_TTL, force: refresh) do
+      {
+        status: :success,
+        content: {
+          current: WeatherPresenter.new(params: current_weather.content).to_h,
+          forecast: ForecastPresenter.new(params: forecast_weather.content).to_h,
+          fetched_at: Time.current.iso8601,
+          cached:
+        }
+      }
+    end
+
+    data
   end
 
   private
 
   def cache_key
     "weather/#{@postcode}"
-  end
-
-  def current
-    data = open_weather_service.retrieve_current_weather_by(
-      lat: @lat, lon: @lon
-    )
-
-    WeatherPresenter.new(params: data).to_h
-  end
-
-  def forecast
-    data = open_weather_service.retrieve_forecast_for_five_days_by(
-      lat: @lat, lon: @lon
-    )
-
-    ForecastPresenter.new(params: data).to_h
   end
 
   def open_weather_service

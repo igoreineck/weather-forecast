@@ -1,0 +1,181 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe ForecastPresenter do
+  let(:forecast) do
+    {
+      cod: "200",
+      message: 0,
+      cnt: 40,
+      list: [
+        {
+          dt: 1793469600,
+          main: { temp: 296.76, feels_like: 296.98, temp_min: 296.76, temp_max: 297.87, pressure: 1015, sea_level: 1015, grnd_level: 933, humidity: 69, temp_kf: -1.11 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10d" } ],
+          clouds: { all: 100 },
+          wind: { speed: 0.62, deg: 349, gust: 1.18 },
+          visibility: 10000,
+          pop: 0.32,
+          rain: { "3h": 0.26 },
+          sys: { pod: "d" },
+          dt_txt: "2026-10-31 15:00:00"
+        },
+        {
+          dt: 1793480400,
+          main: { temp: 295.45, feels_like: 295.59, temp_min: 292.84, temp_max: 295.45, pressure: 1015, sea_level: 1015, grnd_level: 931, humidity: 71, temp_kf: 2.61 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10n" } ],
+          clouds: { all: 96 },
+          wind: { speed: 1.97, deg: 157, gust: 3.39 },
+          visibility: 10000,
+          pop: 0.33,
+          rain: { "3h": 0.57 },
+          sys: { pod: "n" },
+          dt_txt: "2026-10-31 18:00:00"
+        },
+
+        {
+          dt: 1793556000,
+          main: { temp: 296.76, feels_like: 296.98, temp_min: 296.76, temp_max: 297.87, pressure: 1015, sea_level: 1015, grnd_level: 933, humidity: 69, temp_kf: -1.11 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10d" } ],
+          clouds: { all: 100 },
+          wind: { speed: 0.62, deg: 349, gust: 1.18 },
+          visibility: 10000,
+          pop: 0.32,
+          rain: { "3h": 0.26 },
+          sys: { pod: "d" },
+          dt_txt: "2026-11-01 15:00:00"
+        },
+        {
+          dt: 1793566800,
+          main: { temp: 295.45, feels_like: 295.59, temp_min: 292.84, temp_max: 295.45, pressure: 1015, sea_level: 1015, grnd_level: 931, humidity: 71, temp_kf: 2.61 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10n" } ],
+          clouds: { all: 96 },
+          wind: { speed: 1.97, deg: 157, gust: 3.39 },
+          visibility: 10000,
+          pop: 0.33,
+          rain: { "3h": 0.57 },
+          sys: { pod: "n" },
+          dt_txt: "2026-11-01 18:00:00"
+        },
+
+        {
+          dt: 1793642400,
+          main: { temp: 296.76, feels_like: 296.98, temp_min: 296.76, temp_max: 297.87, pressure: 1015, sea_level: 1015, grnd_level: 933, humidity: 69, temp_kf: -1.11 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10d" } ],
+          clouds: { all: 100 },
+          wind: { speed: 0.62, deg: 349, gust: 1.18 },
+          visibility: 10000,
+          pop: 0.32,
+          rain: { "3h": 0.26 },
+          sys: { pod: "d" },
+          dt_txt: "2026-11-02 15:00:00"
+        },
+        {
+          dt: 1793653200,
+          main: { temp: 295.45, feels_like: 295.59, temp_min: 292.84, temp_max: 295.45, pressure: 1015, sea_level: 1015, grnd_level: 931, humidity: 71, temp_kf: 2.61 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10n" } ],
+          clouds: { all: 96 },
+          wind: { speed: 1.97, deg: 157, gust: 3.39 },
+          visibility: 10000,
+          pop: 0.33,
+          rain: { "3h": 0.57 },
+          sys: { pod: "n" },
+          dt_txt: "2026-11-02 18:00:00"
+        },
+
+        {
+          dt: 1793728800,
+          main: { temp: 296.76, feels_like: 296.98, temp_min: 296.76, temp_max: 297.87, pressure: 1015, sea_level: 1015, grnd_level: 933, humidity: 69, temp_kf: -1.11 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10d" } ],
+          clouds: { all: 100 },
+          wind: { speed: 0.62, deg: 349, gust: 1.18 },
+          visibility: 10000,
+          pop: 0.32,
+          rain: { "3h": 0.26 },
+          sys: { pod: "d" },
+          dt_txt: "2026-11-03 15:00:00"
+        },
+        {
+          dt: 1793739600,
+          main: { temp: 295.45, feels_like: 295.59, temp_min: 292.84, temp_max: 295.45, pressure: 1015, sea_level: 1015, grnd_level: 931, humidity: 71, temp_kf: 2.61 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10n" } ],
+          clouds: { all: 96 },
+          wind: { speed: 1.97, deg: 157, gust: 3.39 },
+          visibility: 10000,
+          pop: 0.33,
+          rain: { "3h": 0.57 },
+          sys: { pod: "n" },
+          dt_txt: "2026-11-03 18:00:00"
+        },
+        {
+          dt: 1793815200,
+          main: { temp: 296.76, feels_like: 296.98, temp_min: 296.76, temp_max: 297.87, pressure: 1015, sea_level: 1015, grnd_level: 933, humidity: 69, temp_kf: -1.11 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10d" } ],
+          clouds: { all: 100 },
+          wind: { speed: 0.62, deg: 349, gust: 1.18 },
+          visibility: 10000,
+          pop: 0.32,
+          rain: { "3h": 0.26 },
+          sys: { pod: "d" },
+          dt_txt: "2026-11-04 15:00:00"
+        },
+        {
+          dt: 1793826000,
+          main: { temp: 295.45, feels_like: 295.59, temp_min: 292.84, temp_max: 295.45, pressure: 1015, sea_level: 1015, grnd_level: 931, humidity: 71, temp_kf: 2.61 },
+          weather: [ { id: 500, main: "Rain", description: "light rain", icon: "10n" } ],
+          clouds: { all: 96 },
+          wind: { speed: 1.97, deg: 157, gust: 3.39 },
+          visibility: 10000,
+          pop: 0.33,
+          rain: { "3h": 0.57 },
+          sys: { pod: "n" },
+          dt_txt: "2026-11-04 18:00:00"
+        }
+      ],
+     city: {
+       id: 3163858,
+       name: "Zocca",
+       coord: {
+         lat: 44.34,
+         lon: 10.99
+       },
+       country: "IT",
+       population: 4593,
+       timezone: 7200,
+       sunrise: 1661834187,
+       sunset: 1661882248
+     }
+    }
+  end
+
+  describe "instance" do
+    context "when the params object is given correctly" do
+      let(:object) { described_class.new(params: forecast) }
+
+      it "returns the forecast as an object" do
+        expect(object).to have_attributes(list: forecast[:list])
+        expect(object.grouped_by_date).to be_present
+      end
+    end
+
+    context "when the params object is empty" do
+      let(:object) { described_class.new(params: {}) }
+
+      # @TODO: add a specific error for this
+      it "raises an error" do
+        expect { object }.to raise_error(ForecastPresenter::AttributesMissing)
+      end
+    end
+  end
+
+  describe "#to_h" do
+    let(:object) { described_class.new(params: forecast).to_h }
+
+    it "returns only the expected keys" do
+      expect(object.keys).to match_array(
+        [ "2026-10-31", "2026-11-01", "2026-11-02", "2026-11-03", "2026-11-04" ]
+      )
+    end
+  end
+end
